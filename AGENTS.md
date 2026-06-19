@@ -8,47 +8,38 @@
 - Emulator AVD name: `Medium_Phone`
 
 ## Commands
-- `flutter pub get` — install deps
-- `flutter analyze` — lint + typecheck (run before every commit)
-- `flutter test` — widget smoke tests
-- `flutter run -d emulator-5554` — run on running emulator
-- `flutter build apk --release --split-per-abi` — release APK (3 ABIs, ~15MB each)
+| Command | Purpose |
+|---------|---------|
+| `flutter pub get` | Install deps |
+| `flutter analyze` | Lint + typecheck (run before every commit) |
+| `flutter test` | Run tests |
+| `flutter run -d emulator-5554` | Run on running emulator |
+| `flutter build apk --release --split-per-abi` | Release APK (3 ABIs) |
 
 ## Architecture
-- Entrypoint: `lib/main.dart` → `lib/app.dart` (MaterialApp, 2 routes: `/` splash, `/home`)
-- Models: single `ItemModel` in `lib/models/item_model.dart`
-- Data: static lists in `lib/data/` (alphabet_data, number_data, etc.)
-- TTS: singleton `TtsHelper` in `lib/utils/` (rate 0.4, pitch 1.1, en-US)
-- Theme: `lib/theme/app_theme.dart` (single `ThemeData`, no custom fonts yet)
+- **Entrypoint:** `lib/main.dart` → `ProviderContainer` + `UncontrolledProviderScope` → `AppBootstrap.init()` → `MaterialApp.router`
+- **Navigation:** GoRouter (`lib/bootstrap/router.dart`) with 30+ named + parameterized routes
+- **State:** Riverpod via `ProviderContainer` (one provider wired: `monetizationProvider`)
+- **Persistence:** Hive box names stubbed in `lib/data/local/hive_boxes.dart`; adapters stubbed, no Hive dep in pubspec yet
+- **App name:** `lib/core/constants/app_constants.dart` → `AppConstants.appName`
+- **Design tokens:** `lib/core/theme/` — `colors.dart` (50+ AppColors), `typography.dart` (5 AppTypography presets), `dimensions.dart` (AppDimensions)
+- **Core widgets (14):** `lib/core/widgets/` — includes Pressable3D, SquishyButton, RimCard, TactileCard, BeadProgress, AnimatedFloat, ShimmerLoading, InnerGlowTop, ToyShadow, RimDecoration, PulseRing, WiggleAnimation, SparkleOverlay, RobotMascot
+- **Gradients (4):** `lib/core/gradients/` — MetallicGradient, GemGradient, SeasonalGradient, PaintSplashHero
+- **Theme:** `lib/theme/app_theme.dart` consumes all tokens, `useMaterial3: true`
+- **Style guide:** `/style-guide` route at `lib/features/style_guide/style_guide_screen.dart`
+- **Docs:** `docs/ARCHITECTURE.md`, `docs/DESIGN_SYSTEM.md`, `docs/SCREEN_CATALOG.md` (188 screens), `docs/DATA_MODEL.md`, `docs/MONETIZATION_GUIDE.md`, `docs/ROADMAP.md`
 
-## Design Constants
-| Role | Hex |
-|---|---|
-| Background | `#FFF8E7` |
-| Alphabet | `#FF6B6B` |
-| Numbers | `#4ECDC4` |
-| Days | `#FFE66D` |
-| Months | `#A78BFA` |
-| Text | `#2D3436` |
+## Monetization Framework
+- **Abstract service:** `lib/core/monetization/monetization_service.dart`, two impls: `DevMonetizationService` (no-ops) and `ProductionMonetizationService` (stubs, gated by `areAdsEnabled` = default `false`)
+- All ad methods return `Widget?` — `null` = zero visual traces
+- **Parent gate:** Math puzzle modal (`parent_gate.dart`) before ad clicks / IAP / parent dashboard; session-level pass
+- **IAP:** Single `remove_ads` non-consumable; `purchaseRemoveAds()` → `isPremium = true` → all ads vanish
+- No ad SDKs in dev bundle; add `google_mobile_ads` + `in_app_purchase` when activating
 
-## App Identity
-- Package: `com.abcwonder.abc_wonder`, name: `abc_wonder`
-- Min SDK: Android API 21, iOS 13
-- Target audience: 2–6 year olds, non-addictive (no autoplay, no rewards, no ads)
-
-## Current State (shipped)
-- flutter_screenutil was removed (caused over-scaling on tall screen emulators)
-- Layout uses hardcoded dp values + MediaQuery/LayoutBuilder for responsiveness
-- PageView swipeable carousel per category (Alphabet 26, Numbers 100, Days 7, Months 12)
-- Smart dot indicator (max 7 dots) for categories with ≤30 items; "N of M" counter for >30
-- Tap scale animation (0.92) on item tap for tactile feedback
-- TTS reads item on page change and re-reads on tap
-- Gradient backgrounds per category, emoji placeholders for illustrations
-- `flutter analyze` — 0 issues; release APKs built (3 ABIs, ~12-16MB each)
-- No custom fonts — using system fonts only
-
-## Known Gotchas
-- `flutter_tts` v4.2.2 applies Kotlin Gradle Plugin — warning about future incompatibility
-- Emulator screen is 1080×2400 (20:9 tall), test on 600dp+ for tablet layout too
-- Assets directory exists but empty (placeholder emoji strategy for now)
-- AppTheme2 class duplicated in detail_screen.dart (local helper, not imported from app_theme)
+## Gotchas
+- `flutter_screenutil` **not used** — use `MediaQuery`/`LayoutBuilder` with hardcoded dp
+- Assets directory exists but is **empty** — emoji placeholder strategy; `ItemModel` has no `assetImage` field (old v1 model)
+- Old v1 data files at `lib/data/alphabet_data.dart` etc. still exist alongside new `lib/data/static/*` — be careful which you import
+- `flutter_tts` applies Kotlin Gradle Plugin — future Flutter upgrade may need `android.builtInKotlin=true`
+- Emulator 1080×2400 (20:9); test 600dp+ for tablet layout
+- No CI/CD, no pre-commit hooks, no formatter config

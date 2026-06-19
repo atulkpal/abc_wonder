@@ -1,42 +1,30 @@
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://placehold.co/120x120/FF6B6B/FFFFFF?text=ABC&font=montserrat">
-  <img align="right" width="120" height="120" src="https://placehold.co/120x120/FF6B6B/FFFFFF?text=ABC&font=montserrat" alt="ABC Wonder logo">
-</picture>
-
 # ABC Wonder
 
-**Learn & Play, One Step a Day**  
+**Learn & Play, One Step a Day**
 
-A colourful, non-addictive learning app for children aged 2–6. No ads, no autoplay, no rewards — just a gentle space to explore letters, numbers, days, and months at their own pace.
-
----
+A colourful, non-addictive learning app for children aged 2–6. No ads, no autoplay — just a gentle space to explore letters, numbers, colours, shapes, days, and months at their own pace.
 
 ## Features
 
-- **Swipe & Learn** — Full-screen page carousel for each category: Alphabet (A–Z), Numbers (1–100), Days of the week, Months of the year
-- **Text-to-Speech** — Each item is read aloud automatically on page change, and re-reads when tapped
-- **Smart Navigation** — Chevron arrows + adaptive dot indicator (max 7 dots for small categories, "N of M" counter for large ones)
-- **Tactile Feedback** — Gentle scale animation (0.92) on tap
-- **Gradient Backgrounds** — Distinct colour palette per category to aid visual recognition
+- **6 Learning Modules** — Alphabet (A–Z), Numbers (1–10), Colours (10), Shapes (8), Days (7), Months (12)
+- **Text-to-Speech** — Each item is read aloud on tap (rate 0.4, pitch 1.1, en-US)
+- **Interactive Games** — Counting game, multiple-choice quiz per module, matching, puzzles, and more
+- **Rewards System** — Sticker museum, achievement badges, treasure chest, hall of champions
+- **Parent Dashboard** — Weekly activity charts, per-module progress, TTS/sound settings, parent gate
+- **Robot Lab** — Customise robot colour, eyes, and accessories with live preview
 - **Responsive** — Adapts to phones and tablets (600dp+ breakpoint)
-- **Playful Illustrations** — Emoji placeholders for every item (swap to custom assets via the `assetImage` field)
-
-## Design Principles
-
-| Principle | Detail |
-|-----------|--------|
-| 🚫 No ads | Zero advertising, tracking, or data collection |
-| 🔇 No autoplay | The child controls progression, not the app |
-| 🎁 No rewards | No points, stars, or gamification — intrinsic joy of discovery |
-| 🔊 Audio-first | TTS instead of pre-recorded audio (smaller APK, localised out of the box) |
+- **Emoji placeholders** — Swap to custom assets later via `assetImage` field
 
 ## Tech Stack
 
 | Layer | Choice |
 |-------|--------|
 | Framework | Flutter 3.44.2 / Dart 3.12.2 |
-| Navigation | `MaterialApp` routes + `Navigator.push` |
-| Audio | `flutter_tts` 4.2.2 (TTS, rate 0.4, pitch 1.1) |
+| Navigation | GoRouter (30+ named + parameterized routes) |
+| State | Riverpod (`ProviderContainer` + `UncontrolledProviderScope`) |
+| Audio | `flutter_tts` 4.2.2 |
+| Charts | `fl_chart` 0.70.2 |
+| Fonts | Google Fonts (Plus Jakarta Sans, Nunito Sans) |
 | Layout | `MediaQuery` + `LayoutBuilder` (no screen scaling packages) |
 | Target | Android API 21+ / iOS 13+ |
 
@@ -44,32 +32,35 @@ A colourful, non-addictive learning app for children aged 2–6. No ads, no auto
 
 ```
 lib/
-├── main.dart                  # Entrypoint
-├── app.dart                   # MaterialApp with splash → home routes
-├── models/
-│   └── item_model.dart        # Unified ItemModel
+├── main.dart                         # Entrypoint (ProviderContainer → bootstrap → runApp)
+├── app.dart                          # MaterialApp.router
+├── bootstrap/
+│   ├── app_bootstrap.dart            # Init chain: TTS → Monetization → ready
+│   └── router.dart                   # GoRouter with all routes
+├── core/
+│   ├── constants/app_constants.dart  # AppConstants.appName, ttsRate, etc.
+│   ├── gradients/                    # 4 gradient widgets
+│   ├── monetization/                 # Abstract ad/IAP service + dev/prod impls + parent gate
+│   ├── theme/                        # AppColors (50+), AppTypography (5 presets), AppDimensions
+│   └── widgets/                      # 14 core widgets (Pressable3D, RimCard, etc.)
 ├── data/
-│   ├── alphabet_data.dart     # 26 items
-│   ├── number_data.dart       # 100 items (1–100)
-│   ├── days_data.dart         # 7 items
-│   └── months_data.dart       # 12 items
-├── screens/
-│   ├── splash_screen.dart     # 2-second animated splash
-│   ├── home_screen.dart       # 2×2 category grid (responsive)
-│   └── detail_screen.dart     # PageView carousel + TTS + navigation
-├── widgets/
-│   └── category_tile.dart     # Gradient tile with emoji
-├── theme/
-│   └── app_theme.dart         # Colour constants, ThemeData
-└── utils/
-    └── tts_helper.dart        # TtsHelper singleton
+│   ├── local/                        # Hive box stubs (not yet wired)
+│   ├── models/                       # 12 domain models (Equatable)
+│   └── static/                       # Compile-time data for all 6 modules
+├── features/                         # 14 feature subdirectories (alphabet, numbers, colors, shapes, days, months, rewards, parent_dashboard, robot, settings, daily, home, splash, style_guide)
+├── l10n/                             # Localization (app_en.arb)
+├── theme/app_theme.dart              # ThemeData with useMaterial3: true
+├── utils/tts_helper.dart             # TtsHelper singleton
+├── models/item_model.dart            # Old v1 model (kept for reference)
+├── screens/                          # Old v1 screens (kept for reference)
+└── widgets/                          # Old v1 widgets (kept for reference)
 ```
 
 ## Getting Started
 
 ### Prerequisites
 
-- Flutter 3.44.2+ ([install guide](https://docs.flutter.dev/get-started/install))
+- Flutter 3.44.2+
 - Android SDK (API 21+) — set `ANDROID_HOME`
 - Java 17+ — set `JAVA_HOME`
 - Windows Developer Mode (for plugin symlinks on Windows)
@@ -81,7 +72,7 @@ flutter pub get
 flutter run
 ```
 
-### On a running emulator
+### Run on running emulator
 
 ```bash
 flutter run -d emulator-5554
@@ -93,7 +84,7 @@ flutter run -d emulator-5554
 flutter build apk --release --split-per-abi
 ```
 
-Output (3 ABIs, ~12–16 MB each):
+Output (3 ABIs, ~15–19 MB each):
 
 ```
 build/app/outputs/flutter-apk/
@@ -102,61 +93,24 @@ build/app/outputs/flutter-apk/
 └── app-x86_64-release.apk
 ```
 
-## Customisation
+## Documentation
 
-### Adding new items
-
-Edit the static list in the corresponding data file (`lib/data/`). Each item follows the `ItemModel` shape:
-
-```dart
-ItemModel(
-  title: 'A',                    // Display text (large)
-  subtitle: 'Apple',             // Display text (small)
-  emoji: '🍎',                   // Emoji / asset placeholder
-  ttsText: 'A for Apple',        // What TTS reads aloud
-  color: AppTheme.alphabetColor, // Gradient base colour
-)
-```
-
-### Replacing emoji with real assets
-
-Each `ItemModel` has an optional `assetImage` field. When set, the detail screen renders the asset instead of the emoji. See `docs/asset_migration_guide.md`.
+| File | Contents |
+|------|----------|
+| `docs/ARCHITECTURE.md` | Full architecture, folder structure, data flow |
+| `docs/DESIGN_SYSTEM.md` | All colour tokens, typography, spacing, animations |
+| `docs/SCREEN_CATALOG.md` | All 188 screen specs organised by module |
+| `docs/data_model.md` | All 12 domain models with field descriptions |
+| `docs/MONETIZATION_GUIDE.md` | Step-by-step guide to activate ads, IAP, and parent gate |
+| `docs/ROADMAP.md` | Sprint history and v2.0 candidate items |
 
 ## Known Issues
 
-- `flutter_tts` 4.2.2 applies Kotlin Gradle Plugin — a future Flutter version may require migration to Built-in Kotlin
-- AppTheme2 is duplicated in `detail_screen.dart` (local helper, not imported from `app_theme.dart`)
-- Assets directory exists but is empty (emoji strategy for now)
-
-## Roadmap
-
-- [ ] Custom fonts (Fredoka One)
-- [ ] Real illustrations replacing emoji placeholders
-- [ ] iOS release build
-- [ ] Tablet-optimised landscape layout
+- `flutter_tts` applies Kotlin Gradle Plugin — future Flutter upgrade may need `android.builtInKotlin=true`
+- Assets directory is empty (emoji placeholder strategy)
+- Production monetisation is stubbed — see `docs/MONETIZATION_GUIDE.md` to activate
+- No CI/CD, no pre-commit hooks, no formatter config
 
 ## License
 
-```
-MIT License
-
-Copyright (c) 2026
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-```
+MIT License — see [`LICENSE`](LICENSE) for details.

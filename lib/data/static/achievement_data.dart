@@ -1,0 +1,135 @@
+import 'package:flutter/material.dart';
+import 'package:abc_wonder/data/models/achievement_model.dart';
+
+class AchievementData {
+  static const List<AchievementModel> items = [
+    AchievementModel(
+      id: 'ach_first_letter',
+      title: 'First Letter',
+      description: 'Complete your first letter',
+      tier: AchievementTier.bronze,
+      badgeColor: Color(0xFFCD7F32),
+      unlockCriteria: 'Complete any 1 letter',
+      progress: 1.0,
+      isUnlocked: true,
+      starReward: 10,
+    ),
+    AchievementModel(
+      id: 'ach_alphabet_half',
+      title: 'Half the Alphabet',
+      description: 'Complete 13 letters',
+      tier: AchievementTier.silver,
+      badgeColor: Color(0xFFC0C0C0),
+      unlockCriteria: 'Complete 13 letters',
+      progress: 0.5,
+      starReward: 25,
+    ),
+    AchievementModel(
+      id: 'ach_alphabet_master',
+      title: 'Alphabet Master',
+      description: 'Complete all 26 letters',
+      tier: AchievementTier.gold,
+      badgeColor: Color(0xFFFFD700),
+      unlockCriteria: 'Complete all 26 letters',
+      progress: 0.3,
+      starReward: 50,
+    ),
+    AchievementModel(
+      id: 'ach_count_to_ten',
+      title: 'Count to 10',
+      description: 'Complete numbers 1-10',
+      tier: AchievementTier.bronze,
+      badgeColor: Color(0xFFCD7F32),
+      unlockCriteria: 'Complete numbers 1-10',
+      progress: 0.7,
+      starReward: 10,
+    ),
+    AchievementModel(
+      id: 'ach_number_master',
+      title: 'Number Master',
+      description: 'Complete all numbers',
+      tier: AchievementTier.gold,
+      badgeColor: Color(0xFFFFD700),
+      unlockCriteria: 'Complete all 100 numbers',
+      progress: 0.1,
+      starReward: 50,
+    ),
+    AchievementModel(
+      id: 'ach_color_explorer',
+      title: 'Color Explorer',
+      description: 'Explore 5 colors',
+      tier: AchievementTier.silver,
+      badgeColor: Color(0xFFC0C0C0),
+      unlockCriteria: 'Explore 5 colors',
+      progress: 0.8,
+      starReward: 25,
+    ),
+    AchievementModel(
+      id: 'ach_color_master',
+      title: 'Color Master',
+      description: 'Explore all colors',
+      tier: AchievementTier.gold,
+      badgeColor: Color(0xFFFFD700),
+      unlockCriteria: 'Explore all 11 colors',
+      progress: 0.2,
+      starReward: 50,
+    ),
+    AchievementModel(
+      id: 'ach_shape_builder',
+      title: 'Shape Builder',
+      description: 'Learn 4 shapes',
+      tier: AchievementTier.bronze,
+      badgeColor: Color(0xFFCD7F32),
+      unlockCriteria: 'Learn 4 shapes',
+      progress: 0.5,
+      starReward: 10,
+    ),
+    AchievementModel(
+      id: 'ach_shape_master',
+      title: 'Shape Master',
+      description: 'Learn all shapes',
+      tier: AchievementTier.gold,
+      badgeColor: Color(0xFFFFD700),
+      unlockCriteria: 'Learn all 8 shapes',
+      progress: 0.0,
+      starReward: 50,
+    ),
+    AchievementModel(
+      id: 'ach_week_warrior',
+      title: 'Week Warrior',
+      description: 'Complete 7 days',
+      tier: AchievementTier.silver,
+      badgeColor: Color(0xFFC0C0C0),
+      unlockCriteria: 'Complete all 7 days',
+      progress: 0.4,
+      starReward: 25,
+    ),
+    AchievementModel(
+      id: 'ach_year_explorer',
+      title: 'Year Explorer',
+      description: 'Explore all months',
+      tier: AchievementTier.gold,
+      badgeColor: Color(0xFFFFD700),
+      unlockCriteria: 'Explore all 12 months',
+      progress: 0.0,
+      starReward: 50,
+    ),
+    AchievementModel(
+      id: 'ach_all_rounder',
+      title: 'All-Rounder',
+      description: 'Visit every module',
+      tier: AchievementTier.platinum,
+      badgeColor: Color(0xFFE5E4E2),
+      unlockCriteria: 'Visit all 6 modules',
+      progress: 0.0,
+      starReward: 100,
+    ),
+  ];
+
+  static List<AchievementModel> get unlocked =>
+      items.where((a) => a.isUnlocked).toList();
+
+  static int get unlockedCount => items.where((a) => a.isUnlocked).length;
+
+  static int get totalCount => items.length;
+}
