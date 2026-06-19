@@ -1,5 +1,8 @@
 # ABC Wonder — Agent Guide
 
+## Startup Prompt
+At the start of every new session, ask the user: **"Any bugs to fix from the last session?"** Document them in the session anchor summary before proceeding with other work.
+
 ## Setup
 - Flutter 3.44.2, Dart 3.12.2
 - `ANDROID_HOME` = `$env:LOCALAPPDATA\Android\Sdk`
