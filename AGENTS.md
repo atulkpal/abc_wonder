@@ -27,7 +27,7 @@
 - **Gradients (4):** `lib/core/gradients/` — MetallicGradient, GemGradient, SeasonalGradient, PaintSplashHero
 - **Theme:** `lib/theme/app_theme.dart` consumes all tokens, `useMaterial3: true`
 - **Style guide:** `/style-guide` route at `lib/features/style_guide/style_guide_screen.dart`
-- **Docs:** `docs/ARCHITECTURE.md`, `docs/DESIGN_SYSTEM.md`, `docs/SCREEN_CATALOG.md` (188 screens), `docs/DATA_MODEL.md`, `docs/MONETIZATION_GUIDE.md`, `docs/ROADMAP.md`
+- **Docs:** `docs/ARCHITECTURE.md`, `docs/DESIGN_SYSTEM.md`, `docs/SCREEN_CATALOG.md` (188 screens), `docs/data_model.md`, `docs/MONETIZATION_GUIDE.md`, `docs/ROADMAP.md`
 
 ## Monetization Framework
 - **Abstract service:** `lib/core/monetization/monetization_service.dart`, two impls: `DevMonetizationService` (no-ops) and `ProductionMonetizationService` (stubs, gated by `areAdsEnabled` = default `false`)

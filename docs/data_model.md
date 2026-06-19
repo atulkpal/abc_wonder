@@ -32,7 +32,7 @@ class NumberModel {
   final String emoji;        // "🐶"
   final Color cardColor;     // Color(0xFF4ECDC4) (numberColor)
   final String ttsText;      // "One"
-  final int group;           // 0 (1-10), 1 (11-20), ... 9 (91-100)
+  final int group;           // 0 (1-10) — reserved for future expansion to 1-100
 }
 ```
 

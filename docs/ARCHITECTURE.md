@@ -24,8 +24,8 @@ ABC Wonder is a premium children's learning platform (ages 2-4) built with Flutt
 app_bootstrap.dart
     │
     ├── init TtsHelper (singleton)
-    ├── init Hive (open boxes)
-    ├── init GoRouter
+    ├── init MonetizationService
+    ├── (Hive boxes stubbed — not yet wired)
     └── runApp(App)
 
 App (MaterialApp.router)

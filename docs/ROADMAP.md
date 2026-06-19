@@ -498,64 +498,72 @@ RewardsRepository
 
 ---
 
-## v2.0 — Future Work (Unplanned)
-
-### Candidate items
-| Area | Items |
-|------|-------|
-| **Monetization** | Activate ads + IAP per `MONETIZATION_GUIDE.md` (14 steps, 11 remaining) |
-| **Assets** | Replace emoji placeholders with real illustrations |
-| **Content** | Expand numbers back to 1–100 with pagination; add more games and quiz modes |
-| **Platform** | iOS release build; tablet-optimised landscape layout |
-| **Infrastructure** | CI/CD pipeline; pre-commit hooks; formatter config; Hive persistence wiring |
-| **Performance** | APK size optimization (< 30 MB); `PageView.builder` migration; cold start profiling |
-| **Animation** | Frame-by-frame parity with HTML specs |
-| **Tests** | Widget tests for hub/detail/game screens; integration test for full happy path |
-
 ---
 
-## Dependency Graph (v1.0)
+## v2.0 — Planned Sprints
 
-```
-Sprint 1 (Foundation)
-    │
-    ├──→ Sprint 2 (Design System)
-    │        │
-    │        ├──→ Sprint 3 (Nav & Hub)
-    │        │        │
-    │        │        ├──→ Sprint 4 (Alphabet) ──┐
-    │        │        ├──→ Sprint 5 (Numbers) ───┤
-    │        │        ├──→ Sprint 6 (Colors) ────┤
-    │        │        ├──→ Sprint 7 (Shapes) ────┤
-    │        │        ├──→ Sprint 8 (Days) ──────┤
-    │        │        └──→ Sprint 9 (Months) ────┤
-    │        │                                    │
-    │        │                    ┌───────────────┘
-    │        │                    ↓
-    │        └──→ Sprint 3 ─────→ Sprint 10 (Rewards)
-    │                                    │
-    │                                    ↓
-    │                             Sprint 11 (Parent + Misc)
-    │                                    │
-    │                                    ↓
-    └──────────────────────────────→ Sprint 12 (Polish)
-```
+### Sprint 13 — Bug Fixes & QA
+| Category | Items |
+|----------|-------|
+| **Bugs** | Fix any issues found during v1.0 QA; address user reports |
+| **Regression** | Verify all 6 modules still work end-to-end |
+| **Edge cases** | Empty states, error handling, network-off behaviour |
+| **Accessibility** | Semantic labels, screen reader support, touch target sizes |
 
-## Total Estimate
+### Sprint 14 — Assets & Visual Polish
+| Category | Items |
+|----------|-------|
+| **Illustrations** | Replace emoji placeholders with custom assets per module |
+| **Asset pipeline** | WebP optimisation; asset caching; proper sizing |
+| **Animation parity** | Compare with HTML specs for timing & easing accuracy |
+| **Iconography** | Consistent icon set across all screens |
 
-| Sprint | Days | Complexity |
-|--------|------|------------|
-| 1 — Foundation | 5-7 | Medium |
-| 2 — Design System | 5-7 | Medium |
-| 3 — Nav & Hub | 4-6 | Medium |
-| 4 — Alphabet | 5-7 | Medium |
-| 5 — Numbers | 5-7 | Medium |
-| 6 — Colors | 4-6 | Medium |
-| 7 — Shapes | 4-6 | Medium ✅ |
-| 7.5 — Monetization | 1-2 | Easy ✅ |
-| 8 — Days | 3-5 | Easy |
-| 9 — Months | 3-5 | Easy ✅ |
-| 10 — Rewards | 6-8 | Hard ✅ |
-| 11 — Parent + Misc | 5-7 | Medium ✅ |
-| 12 — Polish | 5-7 | Medium |
-| **Total** | **55-78** | — |
+### Sprint 15 — Platform Expansion
+| Category | Items |
+|----------|-------|
+| **iOS** | Release build; Info.plist config; App Store screenshots |
+| **Tablet** | Landscape layout optimisation for 600dp+ and 800dp+ |
+| **Web** | Responsive web build; PWA support for desktop play |
+| **Adaptive** | Proper breakpoints across phone/tablet/desktop |
+
+### Sprint 16 — Infrastructure & Quality
+| Category | Items |
+|----------|-------|
+| **CI/CD** | GitHub Actions: analyze → test → build → release |
+| **Pre-commit hooks** | `flutter analyze` gate via husky or lefthook |
+| **Formatter** | `dart format` config; CI-enforced style |
+| **Tests** | Widget tests for all hub/detail/game screens; integration test for full happy path |
+| **Performance** | `PageView.builder` migration; cold start profiling; APK size audit |
+
+### Sprint 17 — Monetisation Activation
+Follow `docs/MONETIZATION_GUIDE.md` (14 steps, 11 remaining):
+| Step | What |
+|------|------|
+| 1 | Add `google_mobile_ads` + `in_app_purchase` deps |
+| 2 | Android config (AdMob app ID in manifest) |
+| 3 | iOS config (SKAdNetwork, GADApplicationIdentifier) |
+| 4 | Create AdMob account + ad units |
+| 5 | Wire ad unit IDs (`ad_unit_ids.dart`) |
+| 6 | Implement `ProductionMonetizationService` (real AdMob + IAP) |
+| 7 | Configure Play Console `remove_ads` product |
+| 8 | Swap provider to production (optionally via `--dart-define`) |
+| 9 | Enable ads (`enableAds()` method) |
+| 10 | Test with Google's test ad unit IDs |
+| 11 | Add COPPA child-directed extras to `AdRequest` |
+
+### Sprint 18 — Content Expansion
+| Category | Items |
+|----------|-------|
+| **Numbers** | Expand back to 1-100 with pagination (10 groups) |
+| **Games** | More quiz modes, drag-and-drop sorting, timed challenges |
+| **Progress** | Wire Hive persistence for all modules |
+| **Rewards** | Additional sticker sets, achievement tiers, animations |
+| **Seasonal** | Seasonal events, themed screens, limited-time rewards |
+
+### Future Candidates (Beyond v2.0)
+| Area | Idea |
+|------|------|
+| **Multi-language** | Full i18n for all 6 modules (l10n ARB files ready) |
+| **Parent features** | PDF export, weekly email reports, multi-child profiles |
+| **Backend** | Cloud sync, progress backup, teacher dashboard |
+| **Monetization** | Subscription tier, premium module packs |
