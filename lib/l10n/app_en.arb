@@ -1,0 +1,16 @@
+{
+  "@@locale": "en",
+  "appName": "ABC Wonder",
+  "tagline": "Learn & Play, One Step a Day",
+  "homePrompt": "What would you like to learn today?",
+  "alphabetModule": "Alphabet Adventure",
+  "numbersModule": "Number Kingdom",
+  "colorsModule": "Colors World",
+  "shapesModule": "Shapes Factory",
+  "daysModule": "Days Playground",
+  "monthsModule": "Month Explorer",
+  "back": "Back",
+  "hub": "Hub",
+  "next": "Next",
+  "comingSoon": "Coming soon!"
+}

@@ -1,5 +1,5 @@
 name: abc_wonder
-description: "ABC Wonder - A colorful kids learning app for alphabet, numbers, days, and months."
+description: "ABC Wonder - A colorful kids learning app for alphabet, numbers, days, and months." # Update display name in AppConstants, not here
 publish_to: 'none'
 
 version: 1.0.0+1
@@ -16,7 +16,15 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  intl: ^0.20.2
   flutter_tts: ^4.2.2
+  flutter_riverpod: ^2.6.1
+  go_router: ^14.8.1
+  equatable: ^2.0.7
+  google_fonts: ^6.2.1
+  fl_chart: ^0.70.2
 
 dev_dependencies:
   flutter_test:
